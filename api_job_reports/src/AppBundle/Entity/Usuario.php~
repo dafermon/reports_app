@@ -1,0 +1,60 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Usuario
+ *
+ * @ORM\Table(name="usuario")
+ * @ORM\Entity
+ */
+class Usuario
+{
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="apellido_materno", type="string", length=32, nullable=true)
+     */
+    private $apellidoMaterno;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellido_paterno", type="string", length=32, nullable=false)
+     */
+    private $apellidoPaterno;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="clave", type="string", length=256, nullable=false)
+     */
+    private $clave;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre_primero", type="string", length=32, nullable=false)
+     */
+    private $nombrePrimero;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="nombre_segundo", type="string", length=32, nullable=true)
+     */
+    private $nombreSegundo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="id_usuario", type="string", length=32)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idUsuario;
+
+
+}

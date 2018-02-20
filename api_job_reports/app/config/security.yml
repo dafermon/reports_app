@@ -24,7 +24,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            pattern: ^/
+            pattern: ^/private/api
             http_basic: ~
             provider: our_db_provider
 

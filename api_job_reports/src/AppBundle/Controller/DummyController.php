@@ -13,13 +13,9 @@ use FOS\RestBundle\View\View;
 
 class DummyController extends FOSRestController
 {
-    /**
-    * @Rest\Get("/dummy")
-    */
-    public function getAction()
+    public function getDummyAction()
     {	
 		$dummyOutput = "TestDummyOutput";
-		
         return $dummyOutput;
     }
 }

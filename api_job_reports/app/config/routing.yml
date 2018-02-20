@@ -1,3 +1,10 @@
+# import routes from a controller directory
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+#REST - Despues se puede
+rest: 
+  type : rest
+  resource : "@AppBundle/Resources/config/routing_rest.yml"
+  prefix : /api
+  #prefix : /{_locale}/api -- Faltaria el requeriments con las opciones del locale

@@ -1,0 +1,4 @@
+rest_dummy: 
+  type : rest
+  resource : "@AppBundle/Controller/DummyController.php"
+  name_prefix:  api_

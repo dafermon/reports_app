@@ -11,7 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Usuario
  *
  * @ORM\Table(name="usuario")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UsuarioRepository")
+ *
+ * NOTA: Recueda si se usan anotaciones no se debe usar los Resources\config\doctrine\xxx.orm.xml 
  */
 class Usuario implements UserInterface, \Serializable
 {

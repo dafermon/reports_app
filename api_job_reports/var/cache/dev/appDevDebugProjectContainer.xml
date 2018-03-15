@@ -611,6 +611,10 @@
     <service id="AppBundle\Controller\DummyController" class="AppBundle\Controller\DummyController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
+    <service id="AppBundle\Repository\UsuarioRepository" class="AppBundle\Repository\UsuarioRepository" public="false" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -2254,7 +2258,7 @@
       <argument type="service" id="service_locator.uctj.hf"/>
       <argument type="iterator">
         <argument key="security.firewall.map.context.dev" type="service" id="security.request_matcher.zfhj2lw"/>
-        <argument key="security.firewall.map.context.main" type="service" id="security.request_matcher.00qf1z7"/>
+        <argument key="security.firewall.map.context.main" type="service" id="security.request_matcher.tipcpee"/>
       </argument>
     </service>
     <service id="security.firewall.context" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext" abstract="true">
@@ -2687,7 +2691,7 @@
     <service id="security.firewall.map.config.main" class="Symfony\Bundle\SecurityBundle\Security\FirewallConfig" public="false">
       <argument>main</argument>
       <argument>security.user_checker</argument>
-      <argument>security.request_matcher.00qf1z7</argument>
+      <argument>security.request_matcher.tipcpee</argument>
       <argument>true</argument>
       <argument>false</argument>
       <argument>security.user.provider.concrete.our_db_provider</argument>
@@ -2700,8 +2704,8 @@
       </argument>
       <argument>null</argument>
     </service>
-    <service id="security.request_matcher.00qf1z7" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-      <argument>^/</argument>
+    <service id="security.request_matcher.tipcpee" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+      <argument>^/private/api</argument>
     </service>
     <service id="security.context_listener.0" class="Symfony\Component\Security\Http\Firewall\ContextListener" public="false">
       <argument type="service" id="security.token_storage"/>
@@ -3500,7 +3504,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id="service_locator.sr6ctxe"/>
+      <argument type="service" id="service_locator.ekkf9cv"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -3664,17 +3668,15 @@
         <argument type="service" id="doctrine.orm.container_repository_factory"/>
       </call>
     </service>
-    <service id="doctrine.orm.default_xml_metadata_driver" class="Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver" public="false">
+    <service id="doctrine.orm.default_annotation_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
+      <argument type="service" id="annotations.cached_reader"/>
       <argument type="collection">
-        <argument key="D:\Desarrollo\Web_PHP\projects\api_job_reports\src\AppBundle\Resources\config\doctrine">AppBundle\Entity</argument>
+        <argument>D:\Desarrollo\Web_PHP\projects\api_job_reports\src\AppBundle\Entity</argument>
       </argument>
-      <call method="setGlobalBasename">
-        <argument>mapping</argument>
-      </call>
     </service>
     <service id="doctrine.orm.default_metadata_driver" class="Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain" public="false">
       <call method="addDriver">
-        <argument type="service" id="doctrine.orm.default_xml_metadata_driver"/>
+        <argument type="service" id="doctrine.orm.default_annotation_metadata_driver"/>
         <argument>AppBundle\Entity</argument>
       </call>
     </service>
@@ -3804,6 +3806,7 @@
       <argument type="service" id="templating.engine.twig" on-invalid="null"/>
       <argument type="service" id="request_stack"/>
       <argument type="collection">
+        <argument key="xml">false</argument>
         <argument key="json">false</argument>
         <argument key="html">true</argument>
       </argument>
@@ -3832,7 +3835,7 @@
       <argument type="service" id="file_locator"/>
       <argument type="service" id="controller_name_converter"/>
       <argument type="service" id="fos_rest.routing.loader.reader.controller"/>
-      <argument>null</argument>
+      <argument>json</argument>
     </service>
     <service id="fos_rest.routing.loader.processor" class="FOS\RestBundle\Routing\Loader\RestRouteProcessor" public="false"/>
     <service id="fos_rest.routing.loader.yaml_collection" class="FOS\RestBundle\Routing\Loader\RestYamlCollectionLoader" public="false">
@@ -3841,10 +3844,11 @@
       <argument type="service" id="fos_rest.routing.loader.processor"/>
       <argument>true</argument>
       <argument type="collection">
+        <argument key="xml">false</argument>
         <argument key="json">false</argument>
         <argument key="html">true</argument>
       </argument>
-      <argument>null</argument>
+      <argument>json</argument>
     </service>
     <service id="fos_rest.routing.loader.xml_collection" class="FOS\RestBundle\Routing\Loader\RestXmlCollectionLoader" public="false">
       <tag name="routing.loader"/>
@@ -3852,10 +3856,11 @@
       <argument type="service" id="fos_rest.routing.loader.processor"/>
       <argument>true</argument>
       <argument type="collection">
+        <argument key="xml">false</argument>
         <argument key="json">false</argument>
         <argument key="html">true</argument>
       </argument>
-      <argument>null</argument>
+      <argument>json</argument>
     </service>
     <service id="fos_rest.routing.loader.reader.controller" class="FOS\RestBundle\Routing\Loader\Reader\RestControllerReader" public="false">
       <argument type="service" id="fos_rest.routing.loader.reader.action"/>
@@ -3867,6 +3872,7 @@
       <argument type="service" id="fos_rest.inflector.doctrine"/>
       <argument>true</argument>
       <argument type="collection">
+        <argument key="xml">false</argument>
         <argument key="json">false</argument>
         <argument key="html">true</argument>
       </argument>
@@ -3948,7 +3954,7 @@
         </argument>
       </call>
       <call method="add">
-        <argument type="service" id="fos_rest.request_matcher.69e9d3fd562e0ecffc5bce0c68d3b7a673d187934b742bc76452558275bbd7611198d478"/>
+        <argument type="service" id="fos_rest.request_matcher.2364365e6bb6bfd5cadeda231e59db9139fadac2b673beb794ba3c0068839a899dc3c386"/>
         <argument type="collection">
           <argument key="priorities" type="collection">
             <argument>json</argument>
@@ -3958,6 +3964,17 @@
           <argument key="methods">null</argument>
           <argument key="attributes" type="collection"/>
           <argument key="stop">false</argument>
+        </argument>
+      </call>
+      <call method="add">
+        <argument type="service" id="fos_rest.request_matcher.69e9d3fd562e0ecffc5bce0c68d3b7a673d187934b742bc76452558275bbd7611198d478"/>
+        <argument type="collection">
+          <argument key="stop">true</argument>
+          <argument key="methods">null</argument>
+          <argument key="attributes" type="collection"/>
+          <argument key="prefer_extension">2.0</argument>
+          <argument key="fallback_format">html</argument>
+          <argument key="priorities" type="collection"/>
         </argument>
       </call>
     </service>
@@ -4776,6 +4793,8 @@
     <service id="abstract.instanceof.AppBundle\Controller\DefaultController" class="AppBundle\Controller\DefaultController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\DummyController" class="AppBundle\Controller\DummyController" public="true" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.AppBundle\Controller\DummyController" class="AppBundle\Controller\DummyController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.AppBundle\Repository\UsuarioRepository" class="AppBundle\Repository\UsuarioRepository" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.AppBundle\Repository\UsuarioRepository" class="AppBundle\Repository\UsuarioRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="service_locator.f4ewnep" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection"/>
@@ -5032,12 +5051,21 @@
       </call>
     </service>
     <service id="monolog.handler.null_internal" class="Monolog\Handler\NullHandler"/>
-    <service id="service_locator.sr6ctxe" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.ekkf9cv" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="AppBundle\Repository\UsuarioRepository" type="service" id="AppBundle\Repository\UsuarioRepository"/>
+      </argument>
     </service>
     <service id="fos_rest.request_matcher.6d27357678da78ac461e8b851ac5bf83a1f9471f9d410dff7d760712cb7770b80848bf9c" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
       <argument>^/_profiler|_wdt/</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument type="collection"/>
+    </service>
+    <service id="fos_rest.request_matcher.2364365e6bb6bfd5cadeda231e59db9139fadac2b673beb794ba3c0068839a899dc3c386" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+      <argument>^/api</argument>
       <argument>null</argument>
       <argument>null</argument>
       <argument>null</argument>

@@ -104,26 +104,59 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
-        // homepage
-        if ('' === $trimmedPathinfo) {
-            $ret = array (  '_controller' => 'AppBundle\\Controller\\DefaultController::indexAction',  '_route' => 'homepage',);
-            if (substr($pathinfo, -1) !== '/') {
-                return array_replace($ret, $this->redirect($rawPathinfo.'/', 'homepage'));
+        elseif (0 === strpos($pathinfo, '/default')) {
+            // homepage
+            if ('/default' === $trimmedPathinfo) {
+                $ret = array (  '_controller' => 'AppBundle\\Controller\\DefaultController::indexAction',  '_route' => 'homepage',);
+                if (substr($pathinfo, -1) !== '/') {
+                    return array_replace($ret, $this->redirect($rawPathinfo.'/', 'homepage'));
+                }
+
+                return $ret;
             }
 
-            return $ret;
-        }
-
-        // app_dummy_get
-        if ('/dummy' === $pathinfo) {
-            if ('GET' !== $canonicalMethod) {
-                $allow[] = 'GET';
-                goto not_app_dummy_get;
+            // test1
+            if ('/default/test1' === $pathinfo) {
+                return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::getAction',  '_route' => 'test1',);
             }
 
-            return array (  '_controller' => 'AppBundle\\Controller\\DummyController::getAction',  '_route' => 'app_dummy_get',);
         }
-        not_app_dummy_get:
+
+        elseif (0 === strpos($pathinfo, '/api/dummy')) {
+            // api_get_dummy
+            if (preg_match('#^/api/dummy(?:\\.(?P<_format>xml|json|html))?$#s', $pathinfo, $matches)) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_api_get_dummy;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_dummy')), array (  '_controller' => 'AppBundle\\Controller\\DummyController:getDummyAction',  '_format' => 'json',));
+            }
+            not_api_get_dummy:
+
+            // api_get_dummy1
+            if (0 === strpos($pathinfo, '/api/dummy1') && preg_match('#^/api/dummy1(?:\\.(?P<_format>xml|json|html))?$#s', $pathinfo, $matches)) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_api_get_dummy1;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_dummy1')), array (  '_controller' => 'AppBundle\\Controller\\DummyController:getDummy1Action',  '_format' => 'json',));
+            }
+            not_api_get_dummy1:
+
+            // api_get_dummy2
+            if (0 === strpos($pathinfo, '/api/dummy2') && preg_match('#^/api/dummy2(?:\\.(?P<_format>xml|json|html))?$#s', $pathinfo, $matches)) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_api_get_dummy2;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'api_get_dummy2')), array (  '_controller' => 'AppBundle\\Controller\\DummyController:getDummy2Action',  '_format' => 'json',));
+            }
+            not_api_get_dummy2:
+
+        }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
